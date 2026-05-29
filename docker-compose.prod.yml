@@ -1,38 +1,52 @@
-version: '3.8'
-
+```yaml
 services:
   # ──────────────────────────────────────────────
   # NutriHelp API (production)
   # ──────────────────────────────────────────────
   nutrihelp-api:
     image: nutrihelp-api:${APP_VERSION:-latest}
-    container_name: nutrihelp-production
+
     ports:
       - "80:3000"
+
     environment:
       NODE_ENV: production
       PORT: 3000
       APP_VERSION: ${APP_VERSION:-1.0.0}
+
     healthcheck:
-      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health', (r) => process.exit(r.statusCode === 200 ? 0 : 1))"]
+      test:
+        [
+          "CMD",
+          "wget",
+          "--spider",
+          "-q",
+          "http://localhost:3000/health"
+        ]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 15s
+
     deploy:
       replicas: 2
+
       restart_policy:
         condition: on-failure
         delay: 5s
         max_attempts: 3
+
       resources:
         limits:
-          cpus: '0.50'
+          cpus: "0.50"
           memory: 256M
+
         reservations:
-          cpus: '0.25'
+          cpus: "0.25"
           memory: 128M
-    restart: always
+
+    restart: unless-stopped
+
     networks:
       - nutrihelp-prod-network
 
@@ -41,13 +55,18 @@ services:
   # ──────────────────────────────────────────────
   prometheus:
     image: prom/prometheus:v2.47.0
+
     container_name: nutrihelp-prometheus-prod
+
     ports:
       - "9090:9090"
+
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - prometheus-prod-data:/prometheus
-    restart: always
+
+    restart: unless-stopped
+
     networks:
       - nutrihelp-prod-network
 
@@ -56,18 +75,24 @@ services:
   # ──────────────────────────────────────────────
   grafana:
     image: grafana/grafana:10.1.0
+
     container_name: nutrihelp-grafana-prod
+
     ports:
       - "3001:3000"
+
     environment:
       GF_SECURITY_ADMIN_USER: admin
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-nutrihelp_prod_123}
       GF_USERS_ALLOW_SIGN_UP: "false"
       GF_SERVER_ROOT_URL: "%(protocol)s://%(domain)s:%(http_port)s/"
+
     volumes:
       - grafana-prod-data:/var/lib/grafana
       - ./prometheus/grafana-datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml:ro
-    restart: always
+
+    restart: unless-stopped
+
     networks:
       - nutrihelp-prod-network
 
@@ -78,3 +103,5 @@ volumes:
 networks:
   nutrihelp-prod-network:
     driver: bridge
+```
+
