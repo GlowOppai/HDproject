@@ -1,0 +1,60 @@
+{
+  "name": "nutrihelp-api",
+  "version": "1.0.0",
+  "description": "NutriHelp - Personalised Recipe, Meal Planning & Nutrient Suggestion API",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "jest --coverage --forceExit",
+    "test:unit": "jest tests/unit --coverage --forceExit",
+    "test:integration": "jest tests/integration --coverage --forceExit",
+    "lint": "eslint src/ tests/ --ext .js",
+    "lint:fix": "eslint src/ tests/ --ext .js --fix",
+    "build": "echo 'Build complete - Node.js project ready for containerisation'",
+    "audit": "npm audit --audit-level=moderate"
+  },
+  "keywords": ["nutrition", "recipes", "meal-planning", "health", "api"],
+  "author": "NutriHelp Team",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0",
+    "prom-client": "^15.1.0",
+    "uuid": "^9.0.0",
+    "express-rate-limit": "^7.1.5",
+    "joi": "^17.11.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3",
+    "eslint": "^8.54.0",
+    "eslint-plugin-node": "^11.1.0",
+    "nodemon": "^3.0.1"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/server.js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 60,
+        "functions": 70,
+        "lines": 70,
+        "statements": 70
+      }
+    },
+    "testMatch": [
+      "**/tests/**/*.test.js"
+    ],
+    "coverageReporters": ["text", "lcov", "clover"],
+    "coverageDirectory": "coverage"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

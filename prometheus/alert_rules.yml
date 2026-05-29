@@ -1,0 +1,49 @@
+groups:
+  - name: nutrihelp_alerts
+    rules:
+      # Alert: API is down
+      - alert: NutriHelpAPIDown
+        expr: up{job="nutrihelp-api"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "NutriHelp API is down"
+          description: "The NutriHelp API has been unreachable for more than 1 minute."
+
+      # Alert: High error rate (>5% of requests are 5xx)
+      - alert: HighErrorRate
+        expr: |
+          rate(nutrihelp_http_requests_total{status_code=~"5.."}[5m])
+          /
+          rate(nutrihelp_http_requests_total[5m]) > 0.05
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High HTTP error rate"
+          description: "More than 5% of requests are returning 5xx errors."
+
+      # Alert: Slow response times (p95 > 2s)
+      - alert: SlowResponseTime
+        expr: |
+          histogram_quantile(0.95,
+            rate(nutrihelp_http_request_duration_seconds_bucket[5m])
+          ) > 2
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Slow API response times"
+          description: "95th percentile response time is above 2 seconds."
+
+      # Alert: High memory usage
+      - alert: HighMemoryUsage
+        expr: |
+          nutrihelp_nodejs_heap_used_bytes / nutrihelp_nodejs_heap_size_total_bytes > 0.90
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage"
+          description: "Node.js heap usage is above 90%."
