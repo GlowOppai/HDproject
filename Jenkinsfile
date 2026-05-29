@@ -280,8 +280,7 @@ EOF
                     docker stop nutrihelp-grafana 2>/dev/null || true
                     docker rm nutrihelp-grafana 2>/dev/null || true
 
-                    # FIXED HERE
-                    APP_VERSION=${APP_VERSION} docker-compose up -d
+                    APP_VERSION=${APP_VERSION} docker compose up -d
 
                     echo "Waiting for containers..."
                     sleep 15
@@ -316,7 +315,6 @@ EOF
                 failure {
                     echo "❌ Deploy stage FAILED"
 
-                    // FIXED HERE
                     sh 'docker compose logs || true'
                 }
             }
@@ -346,13 +344,11 @@ EOF
 
                     echo "Stopping staging stack..."
 
-                    # FIXED HERE
                     docker compose down || true
 
                     echo "Starting production stack..."
 
-                    # FIXED HERE
-                    APP_VERSION=${APP_VERSION} docker compose -f docker compose.prod.yml up -d
+                    APP_VERSION=${APP_VERSION} docker compose -f docker-compose.prod.yml up -d
 
                     sleep 15
 
@@ -375,7 +371,6 @@ EOF
                     echo "❌ Release stage FAILED"
 
                     sh '''
-                        # FIXED HERE
                         docker compose -f docker-compose.prod.yml down || true
                     '''
                 }
