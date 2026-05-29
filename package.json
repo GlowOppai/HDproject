@@ -14,25 +14,32 @@
     "build": "echo 'Build complete - Node.js project ready for containerisation'",
     "audit": "npm audit --audit-level=moderate"
   },
-  "keywords": ["nutrition", "recipes", "meal-planning", "health", "api"],
+  "keywords": [
+    "nutrition",
+    "recipes",
+    "meal-planning",
+    "health",
+    "api"
+  ],
   "author": "NutriHelp Team",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.18.2",
     "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
     "helmet": "^7.1.0",
+    "joi": "^17.11.0",
     "morgan": "^1.10.0",
     "prom-client": "^15.1.0",
-    "uuid": "^9.0.0",
-    "express-rate-limit": "^7.1.5",
-    "joi": "^17.11.0"
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "jest": "^29.7.0",
-    "supertest": "^6.3.3",
     "eslint": "^8.54.0",
     "eslint-plugin-node": "^11.1.0",
-    "nodemon": "^3.0.1"
+    "jest": "^29.7.0",
+    "jest-junit": "^17.0.0",
+    "nodemon": "^3.0.1",
+    "supertest": "^6.3.3"
   },
   "jest": {
     "testEnvironment": "node",
@@ -51,7 +58,11 @@
     "testMatch": [
       "**/tests/**/*.test.js"
     ],
-    "coverageReporters": ["text", "lcov", "clover"],
+    "coverageReporters": [
+      "text",
+      "lcov",
+      "clover"
+    ],
     "coverageDirectory": "coverage"
   },
   "engines": {
