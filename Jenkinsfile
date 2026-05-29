@@ -352,7 +352,7 @@ EOF
                     echo "Starting production stack..."
 
                     # FIXED HERE
-                    APP_VERSION=${APP_VERSION} docker compose -f docker-compose.prod.yml up -d
+                    APP_VERSION=${APP_VERSION} docker compose -f docker compose.prod.yml up -d
 
                     sleep 15
 
