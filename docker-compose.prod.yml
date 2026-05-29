@@ -1,8 +1,5 @@
 ```yaml
 services:
-  # ──────────────────────────────────────────────
-  # NutriHelp API (production)
-  # ──────────────────────────────────────────────
   nutrihelp-api:
     image: nutrihelp-api:${APP_VERSION:-latest}
 
@@ -50,9 +47,6 @@ services:
     networks:
       - nutrihelp-prod-network
 
-  # ──────────────────────────────────────────────
-  # Prometheus
-  # ──────────────────────────────────────────────
   prometheus:
     image: prom/prometheus:v2.47.0
 
@@ -70,9 +64,6 @@ services:
     networks:
       - nutrihelp-prod-network
 
-  # ──────────────────────────────────────────────
-  # Grafana
-  # ──────────────────────────────────────────────
   grafana:
     image: grafana/grafana:10.1.0
 
@@ -104,4 +95,3 @@ networks:
   nutrihelp-prod-network:
     driver: bridge
 ```
-
