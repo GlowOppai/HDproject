@@ -281,7 +281,7 @@ EOF
                     docker rm nutrihelp-grafana 2>/dev/null || true
 
                     # FIXED HERE
-                    APP_VERSION=${APP_VERSION} docker compose up -d
+                    APP_VERSION=${APP_VERSION} docker-compose up -d
 
                     echo "Waiting for containers..."
                     sleep 15
